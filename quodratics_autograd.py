@@ -16,10 +16,10 @@ if __name__ == '__main__':
     BURNIN = 500
     EPISODE = 1000
     Dim = 2
-    rho = 1-1/10**9
+    rho = 1-1/10**12
     SIGMA = np.ones((Dim,Dim))
-    SIGMA[0][0]= rho
-    SIGMA[1][1] = rho
+    SIGMA[0][1]= rho
+    SIGMA[1][0] = rho
 
     U = lambda q: np.dot(q,np.linalg.solve(SIGMA,q))/2
     #dU = grad(U)

@@ -4,7 +4,7 @@ import numpy as np
 CHAINS = 5
 STEPS = 5
 dt10=0.0000001
-dt10=0.0000001
+dt20=0.0000001
 INTERVAL=1001
 outbnd=lambda q:False
 decaydt = 0.1

@@ -4,8 +4,11 @@ import matplotlib.pyplot as plt
 from jax import grad, jit, jacfwd,jacrev
 import jax.numpy as np
 import Sampler1
-from Sampler1 import hmc, CHAINS
+from Sampler1 import hmc, CHAINS,sqrtm
 import matplotlib.pyplot as plt
+
+rho = 1-1/10**7
+SIGMA = np0.array([[1,rho],[rho,1]])
 
 @jit
 def U(q):
@@ -19,15 +22,15 @@ ddU = hessian(U)
 
 if __name__ == '__main__':
     Sampler1.INTERVAL = 101
-    Sampler1.dt10 = 0.00000001
-    Sampler1.dt20 = 0.00000001
+    Sampler1.dt10 = 0.0001
+    Sampler1.dt20 = 0.0001
     #np.random.seed(0)
-    BURNIN = 5000
-    EPISODE = 10000
-    rho = 1-1/10**6
+    BURNIN = 500
+    EPISODE = 1000
+
     Dim = 2
-    SIGMA = np0.ones((Dim,Dim))*rho
-    np0.fill_diagonal(SIGMA,1)
+
+
     gen = hmc(U, dU,ddU, Dim, BURNIN, True, True)
     qs = []
     for j in range(EPISODE):
@@ -36,7 +39,10 @@ if __name__ == '__main__':
             qs.append(q)
 
     qs = np.array(qs)
+    qs1 = np.linalg.solve(sqrtm(SIGMA),qs.transpose())
     plt.figure()
     plt.plot(qs[:,0],qs[:,1], '.',alpha=0.5)
+    plt.figure()
+    plt.plot(qs1[0,:],qs1[1,:], '.',alpha=0.5)
     plt.show()
     plt.pause(1000)
